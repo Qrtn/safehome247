@@ -29,7 +29,6 @@ app.get('/', function (req, res) {
   WHERE \
     device.account_id=? \
   ', 1, function (err, rows) {
-    console.log(rows);
     res.render('index', {devices: rows});
   });
 });
