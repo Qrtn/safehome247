@@ -1,0 +1,40 @@
+.row {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.details {
+  overflow: hidden;
+  clear: both;
+}
+
+.sensor-name, .sensor-status {
+  display: inline;
+  margin-top: 10px;
+  margin-right: 5px;
+}
+
+.table {
+  margin-bottom: 8px;
+}
+
+.col-xs-12 {
+  margin-bottom: 15px;
+}
+
+.history {
+  margin-bottom: 10px;
+}
+
+.control-label {
+  padding-right: 0;
+}
+
+/*
+@media (max-width:767px) {
+}
+@media (min-width:768px){}
+@media (min-width:992px){}
+@media (min-width:1200px){}
+*/
