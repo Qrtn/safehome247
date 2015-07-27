@@ -47,4 +47,8 @@ mqttclient.on('message', function (topic, payload) {
   io.emit('mqtt', {'topic': topic, 'payload': payload});
 });
 
-server.listen(80);
+if (process.env.NODE_ENV == 'production') {
+  server.listen(3000);
+} else {
+  server.listen(80);
+}
