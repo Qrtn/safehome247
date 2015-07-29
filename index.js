@@ -1,3 +1,6 @@
+var dotenv = require('dotenv');
+dotenv.load();
+
 var http = require('http');
 var express = require('express');
 var cons = require('consolidate');
@@ -45,6 +48,8 @@ io.on('connection', function (socket) {
 mqttclient.on('message', function (topic, payload) {
   io.emit('mqtt', {'topic': topic, 'payload': payload});
 });
+
+console.log(process.env.NODE_ENV);
 
 if (process.env.NODE_ENV == 'production') {
   server.listen(3000);

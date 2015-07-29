@@ -58,7 +58,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
 
-  grunt.registerTask('serve', ['concurrent']);
+  grunt.registerTask('start', ['concurrent']);
   grunt.registerTask('buildbower', ['bower_concat', 'uglify:bower', 'cssmin:bower']);
 
 };

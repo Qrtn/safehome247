@@ -1,3 +1,6 @@
+var dotenv = require('dotenv');
+dotenv.load();
+
 var mqtt = require('mqtt');
 var sqlite3 = require('sqlite3');
 
