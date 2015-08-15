@@ -20,11 +20,6 @@ $(document).ready(function () {
     socket.emit('subscribe', {topic: 'safehome247/#'});
   });
 
-  $('.alert-toggle').bootstrapSwitch();
-  $('.alert-toggle').on('switchChange.bootstrapSwitch', function (event, state) {
-    socket.emit('alert', {value: state, device_id: $(this).data('device-id')});
-  });
-
   $('span[data-topic^="safehome247/security/"]').each(function (index, value) {
     switch ($(this).data('message')) {
       case 'on':
