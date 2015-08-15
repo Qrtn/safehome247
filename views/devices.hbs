@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <title>Devices - SafeHome247</title>
+  <link rel='stylesheet' href='/css/bower.min.css'>
+  <link rel='stylesheet' href='/css/devices.css'>
+</head>
+<body>
+  <div class='container'>
+    <div class='navbar navbar-inverse'>
+      <div class='container-fluid'>
+        <div class='navbar-header'>
+          <a class='navbar-brand' href='/'>SafeHome247</a>
+        </div>
+        <ul class='nav navbar-nav'>
+          <li class='active'><a href='/devices'>Devices</a></li>
+          <li><a href='/rules'>Rules</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <table class='table table-striped'>
+    {{#devices}}
+      <tr>
+        <td class='cell-name'>
+          <h3 class='sensor-name'>{{name}}</h3>
+        </td>
+        <td class='cell-status'>
+          <h3 class='sensor-status'><span class='label label-default' data-topic='{{topic}}' data-message='{{message}}'>Unknown</span></h3>
+        </td>
+      </tr>
+    {{/devices}}
+    </table>
+  </div>
+
+  <script src='/js/bower.min.js'></script>
+  <script src='/js/devices.js'></script>
+</body>
+</html>

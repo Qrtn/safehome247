@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <title>Rules | SafeHome247</title>
+  <link rel='stylesheet' href='/css/bower.min.css'>
+  <link rel='stylesheet' href='/css/rules.css'>
+</head>
+<body>
+  <div class='container'>
+    <div class='navbar navbar-inverse'>
+      <div class='container-fluid'>
+        <div class='navbar-header'>
+          <a class='navbar-brand' href='/'>SafeHome247</a>
+        </div>
+        <ul class='nav navbar-nav'>
+          <li><a href='/devices'>Devices</a></li>
+          <li class='active'><a href='/rules'>Rules</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class='all-alerts'>
+      <button class='btn btn-primary' type='button' id='all-alerts-on'>All alerts on</button>
+      <button class='btn btn-default' type='button' id='all-alerts-off'>All alerts off</button>
+    </div>
+
+    <table class='table table-striped'>
+    {{#devices}}
+      <tr>
+        <td class='cell-name'>
+          <h3 class='sensor-name'>{{name}}</h3>
+        </td>
+        <td class='cell-alert'>
+          <input type='checkbox' class='alert-toggle' data-label-text='Alert' data-device-id='{{device_id}}'{{#if alert}} checked{{/if}}>
+        </td>
+      </tr>
+    {{/devices}}
+    </table>
+  </div>
+
+  <script src='/js/bower.min.js'></script>
+  <script src='/js/rules.js'></script>
+</body>
+</html>

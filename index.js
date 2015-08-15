@@ -20,19 +20,38 @@ app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (req, res) {
+  res.redirect('/devices');
+  // res.render('login');
+});
+
+app.get('/devices', function (req, res) {
   db.all('\
   SELECT \
     device.device_id, \
     device.name, \
     device.topic, \
-    device.alert, \
     (SELECT message FROM log WHERE log.device_id=device.device_id ORDER BY time DESC LIMIT 1) AS message \
   FROM \
     device \
   WHERE \
     device.account_id=? \
   ', 1, function (err, rows) {
-    res.render('index', {devices: rows});
+    res.render('devices', {devices: rows});
+  });
+});
+
+app.get('/rules', function (req, res) {
+  db.all('\
+  SELECT \
+    device.device_id, \
+    device.name, \
+    device.alert \
+  FROM \
+    device \
+  WHERE \
+    device.account_id=? \
+  ', 1, function (err, rows) {
+    res.render('rules', {devices: rows});
   });
 });
 
@@ -41,7 +60,7 @@ io.on('connection', function (socket) {
     mqttclient.subscribe(data.topic);
   });
   socket.on('alert', function (data) {
-    db.run('UPDATE device SET alert=? WHERE device_id=?', data.value ? 1 : 0, data.device_id)
+    db.run('UPDATE device SET alert=? WHERE device_id=?', data.value ? 1 : 0, data.device_id);
   });
 });
 
