@@ -3,7 +3,7 @@ dotenv.load();
 
 var mqtt = require('mqtt');
 var sqlite3 = require('sqlite3');
-var sendgrid = require('sendgrid')('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')
+var sendgrid = require('sendgrid')(process.env.SENDGRID_API_KEY)
 
 var db = new sqlite3.Database('safehome247.sqlite')
 

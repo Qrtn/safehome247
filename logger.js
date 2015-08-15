@@ -4,9 +4,9 @@ dotenv.load();
 var mqtt = require('mqtt');
 var sqlite3 = require('sqlite3');
 
-var db = new sqlite3.Database('safehome247.sqlite')
+var db = new sqlite3.Database(process.env.SQLITE_DATABASE)
 
-var mqttclient = mqtt.connect('mqtt://localhost')
+var mqttclient = mqtt.connect(process.env.MQTT_BROKER_URL)
 
 mqttclient.subscribe('safehome247/#')
 

@@ -11,8 +11,8 @@ var socketio = require('socket.io');
 var app = express();
 var server = http.createServer(app);
 var io = socketio(server);
-var mqttclient = mqtt.connect('mqtt://localhost');
-var db = new sqlite3.Database('safehome247.sqlite')
+var mqttclient = mqtt.connect(process.env.MQTT_BROKER_URL);
+var db = new sqlite3.Database(process.env.SQLITE_DATABASE)
 
 app.engine('hbs', exphbs());
 app.set('view engine', 'hbs');
