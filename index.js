@@ -3,7 +3,7 @@ dotenv.load();
 
 var http = require('http');
 var express = require('express');
-var cons = require('consolidate');
+var exphbs = require('express-handlebars');
 var mqtt = require('mqtt');
 var sqlite3 = require('sqlite3');
 var socketio = require('socket.io');
@@ -14,7 +14,7 @@ var io = socketio(server);
 var mqttclient = mqtt.connect('mqtt://localhost');
 var db = new sqlite3.Database('safehome247.sqlite')
 
-app.engine('hbs', cons.handlebars);
+app.engine('hbs', exphbs());
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
@@ -48,8 +48,6 @@ io.on('connection', function (socket) {
 mqttclient.on('message', function (topic, payload) {
   io.emit('mqtt', {'topic': topic, 'payload': payload});
 });
-
-console.log(process.env.NODE_ENV);
 
 if (process.env.NODE_ENV == 'production') {
   server.listen(3000);
