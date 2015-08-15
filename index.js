@@ -55,6 +55,10 @@ app.get('/rules', function (req, res) {
   });
 });
 
+app.get('/logs', function (req, res) {
+  res.render('logs');
+});
+
 io.on('connection', function (socket) {
   socket.on('subscribe', function (data) {
     mqttclient.subscribe(data.topic);
@@ -62,11 +66,30 @@ io.on('connection', function (socket) {
   socket.on('alert', function (data) {
     db.run('UPDATE device SET alert=? WHERE device_id=?', data.value ? 1 : 0, data.device_id);
   });
+  socket.on('logs', function (data) {
+    db.all('\
+    SELECT \
+      log.time, \
+      device.name, \
+      log.message \
+    FROM \
+      device INNER JOIN log ON device.device_id=log.device_id \
+    WHERE \
+      device.account_id=? AND \
+      log.time BETWEEN ? AND ? \
+    ORDER BY \
+      log.time DESC \
+    ', 1, data.time, data.time + 86399999, function (err, rows) {
+      socket.emit('logs', rows);
+    });
+  });
 });
 
 mqttclient.on('message', function (topic, payload) {
   io.emit('mqtt', {'topic': topic, 'payload': payload});
 });
+
+mqttclient.subscribe('safehome247/#')
 
 if (process.env.NODE_ENV == 'production') {
   server.listen(3000);

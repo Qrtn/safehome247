@@ -17,7 +17,6 @@ $(document).ready(function () {
   var socket = io();
   socket.on('connect', function () {
     socket.on('mqtt', onMQTT)
-    socket.emit('subscribe', {topic: 'safehome247/#'});
   });
 
   $('span[data-topic^="safehome247/security/"]').each(function (index, value) {

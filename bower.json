@@ -17,6 +17,7 @@
     "bootstrap-switch": "~3.3.2",
     "socket.io-client": "~1.3.6",
     "jquery": "~2.1.4",
-    "bootstrap": "~3.3.5"
+    "bootstrap": "~3.3.5",
+    "pikaday": "~1.3.3"
   }
 }
