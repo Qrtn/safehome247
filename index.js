@@ -21,7 +21,10 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (req, res) {
   res.redirect('/devices');
-  // res.render('login');
+});
+
+app.get('/login', function(req, res) {
+  res.render('login');
 });
 
 app.get('/devices', function (req, res) {
