@@ -8,16 +8,20 @@ var db = new sqlite3.Database(process.env.SQLITE_DATABASE)
 
 var mqttclient = mqtt.connect(process.env.MQTT_BROKER_URL)
 
-mqttclient.subscribe('safehome247/#')
+mqttclient.subscribe('device/#')
 
 mqttclient.on('message', function (topic, payload) {
+  var parts = topic.split('/');
+  var accountId = parts[1];
+  var deviceType = parts[2];
+  var deviceId = parts[3];
+
   var time = Date.now();
   var message = payload.toString();
   console.log('logger:', topic, message);
 
-  db.run('\
-  INSERT INTO log (device_id,time,message) \
-  SELECT device_id,?,? FROM device WHERE topic=?', time, message, topic, function (err) {
+  db.run('INSERT INTO log (device_id,time,message) VALUES (?,?,?)',
+         deviceId, time, message, function (err) {
     if (err) {
       console.error('logger:', err);
     }

@@ -1,81 +1,48 @@
-function ab2str(buf) {
-  return String.fromCharCode.apply(null, new Uint8Array(buf));
+update = {
+  motion: updateMotion,
+  temperature_humidity: updateTemperatureHumidity
+};
+
+function updateMotion(sensorStatus, message) {
+  switch (message) {
+    case '':
+      sensorStatus.text('Unknown');
+      sensorStatus.removeClass('label-success label-danger').addClass('label-default');
+      break;
+
+    case 'exit':
+      sensorStatus.text('Offline');
+      sensorStatus.removeClass('label-success label-danger').addClass('label-default');
+      break;
+
+    case 'on':
+      sensorStatus.text('Motion');
+      sensorStatus.removeClass('label-default').addClass('label-danger');
+      break;
+
+    case 'off':
+      sensorStatus.text('Idle');
+      sensorStatus.removeClass('label-danger').addClass('label-success');
+      break;
+  }
 }
 
-/*
-function str2ab(str) {
-  var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
-  var bufView = new Uint16Array(buf);
-  for (var i=0, strLen=str.length; i<strLen; i++) {
-    bufView[i] = str.charCodeAt(i);
-  }
-  return buf;
+function updateTemperatureHumidity(sensorstatus, message) {
 }
-*/
 
 $(document).ready(function () {
   var socket = io();
   socket.on('connect', function () {
-    socket.on('mqtt', onMQTT)
+    socket.emit('login', {'sessionId': 'rubbish'});
+    socket.on('update', onUpdate);
   });
 
-  $('span[data-topic^="safehome247/security/"]').each(function (index, value) {
-    switch ($(this).data('message')) {
-      case 'on':
-        security_motion($(this));
-        break;
-      case 'off':
-        security_idle($(this));
-        break;
-      case '':
-        unknown($(this));
-        break;
-    }
+  $('span[data-device-id]').each(function () {
+    update[$(this).data('type')]($(this), $(this).data('message'));
   });
 });
 
-function onMQTT(data) {
-  var parts = data.topic.split('/');
-  var sensorType = parts[1];
-  var sensorStatus = $('span[data-topic="' + data.topic + '"]')
-  switch (sensorType) {
-    case 'security':
-      security(sensorStatus, data.payload);
-      break;
-  }
-}
-
-function security(sensorStatus, payload) {
-  message = ab2str(payload);
-  switch (message) {
-    case 'on':
-      security_motion(sensorStatus);
-      break;
-    case 'off':
-      security_idle(sensorStatus);
-      break;
-    case 'exit':
-      offline(sensorStatus);
-      break;
-  }
-}
-
-function unknown(sensorStatus) {
-  sensorStatus.text('Unknown');
-  sensorStatus.removeClass('label-success label-danger').addClass('label-default');
-}
-
-function offline(sensorStatus) {
-  sensorStatus.text('Offline');
-  sensorStatus.removeClass('label-success label-danger').addClass('label-default');
-}
-
-function security_motion(sensorStatus) {
-  sensorStatus.text('Motion');
-  sensorStatus.removeClass('label-default').addClass('label-danger');
-}
-
-function security_idle(sensorStatus) {
-  sensorStatus.text('Idle');
-  sensorStatus.removeClass('label-danger').addClass('label-success');
+function onUpdate(data) {
+  var sensorStatus = $('span[data-device-id="' + data.deviceId + '"]');
+  update[data.deviceType](sensorStatus, data.message);
 }

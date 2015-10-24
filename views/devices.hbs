@@ -29,7 +29,9 @@
           <h3 class='sensor-name'>{{name}}</h3>
         </td>
         <td class='cell-status'>
-          <h3 class='sensor-status'><span class='label label-default' data-topic='{{topic}}' data-message='{{message}}'>Unknown</span></h3>
+          <h3 class='sensor-status'><span class='label label-default'
+              data-device-id='{{device_id}}' data-type='{{type}}'
+              data-message='{{message}}'>Unknown</span></h3>
         </td>
       </tr>
     {{/devices}}
