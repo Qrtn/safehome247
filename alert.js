@@ -9,24 +9,35 @@ var db = new sqlite3.Database('safehome247.sqlite')
 
 var mqttclient = mqtt.connect('mqtt://localhost')
 
-mqttclient.subscribe('device/#')
+var deviceCache = {};
+function setupDeviceCache() {
+  db.each('SELECT * FROM device', function (err, row) {
+    deviceCache[row['device_id']] = {
+      accountId: row['account_id'],
+      deviceName: row['name'],
+      deviceType: row['type'],
+      alert: row['alert']
+    };
+  });
+}
+setupDeviceCache();
+
+mqttclient.subscribe('device/+')
 
 mqttclient.on('message', function (topic, payload) {
   var message = payload.toString();
   console.log('alert:', topic, message);
 
   var topic_parts = topic.split('/');
-  var accountId = topic_parts[1];
-  var deviceType = topic_parts[2];
-  var deviceId = topic_parts[3];
+  var deviceId = topic_parts[1]
+  var device = deviceCache[deviceId];
 
-  if (deviceType === 'motion' && message === 'on') {
-    var deviceName = null;
+  if ((device.deviceType === 'motion' || device.deviceType === 'door') &&
+      message === 'on') {
     var emails = [];
 
     db.all('\
     SELECT \
-      device.name, \
       email.email \
     FROM \
       device \
@@ -44,14 +55,14 @@ mqttclient.on('message', function (topic, payload) {
         for (var i = 0; i < rows.length; i++) {
           emails.push(rows[i].email);
         }
-        deviceName = rows[0].name;
 
         var email = new sendgrid.Email({
           to: emails,
           from: 'alert@safehome247.com',
           fromname: 'SafeHome247 Alert',
-          subject: (new Date()).toLocaleString() + ': ' + deviceName,
-          text: deviceName
+          subject: (new Date()).toLocaleString() + ': ' +
+            device.deviceName,
+          text: device.deviceName
         });
 
         sendgrid.send(email, function(err, json) {

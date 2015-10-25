@@ -14,6 +14,19 @@ var io = socketio(server);
 var mqttclient = mqtt.connect(process.env.MQTT_BROKER_URL);
 var db = new sqlite3.Database(process.env.SQLITE_DATABASE)
 
+var deviceCache = {};
+function setupDeviceCache() {
+  db.each('SELECT * FROM device', function (err, row) {
+    deviceCache[row['device_id']] = {
+      accountId: row['account_id'],
+      deviceName: row['name'],
+      deviceType: row['type'],
+      alert: row['alert']
+    };
+  });
+}
+setupDeviceCache();
+
 app.engine('hbs', exphbs());
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
@@ -38,8 +51,7 @@ app.get('/devices', function (req, res) {
     device \
   WHERE \
     device.account_id=? \
-  ',
-  1, function (err, rows) {
+  ', 1, function (err, rows) {
     res.render('devices', {devices: rows});
   });
 });
@@ -54,8 +66,7 @@ app.get('/rules', function (req, res) {
     device \
   WHERE \
     device.account_id=? \
-  ',
-  1, function (err, rows) {
+  ', 1, function (err, rows) {
     res.render('rules', {devices: rows});
   });
 });
@@ -95,14 +106,12 @@ io.on('connection', function (socket) {
 
 mqttclient.on('message', function (topic, payload) {
   var parts = topic.split('/');
-  var accountId = parts[1];
-  var deviceType = parts[2];
-  var deviceId = parts[3];
-  io.to(accountId).emit('update', {'deviceId': deviceId, 'deviceType':
-                        deviceType, 'message': payload.toString()});
+  var deviceId = parts[1];
+  io.to(deviceCache[deviceId].accountId).emit('update', {'deviceId': deviceId, 'message':
+                        payload.toString()});
 });
 
-mqttclient.subscribe('device/#')
+mqttclient.subscribe('device/+')
 
 if (process.env.NODE_ENV == 'production') {
   server.listen(3000);

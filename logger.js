@@ -8,13 +8,11 @@ var db = new sqlite3.Database(process.env.SQLITE_DATABASE)
 
 var mqttclient = mqtt.connect(process.env.MQTT_BROKER_URL)
 
-mqttclient.subscribe('device/#')
+mqttclient.subscribe('device/+')
 
 mqttclient.on('message', function (topic, payload) {
   var parts = topic.split('/');
-  var accountId = parts[1];
-  var deviceType = parts[2];
-  var deviceId = parts[3];
+  var deviceId = parts[1];
 
   var time = Date.now();
   var message = payload.toString();

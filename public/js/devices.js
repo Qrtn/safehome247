@@ -44,5 +44,5 @@ $(document).ready(function () {
 
 function onUpdate(data) {
   var sensorStatus = $('span[data-device-id="' + data.deviceId + '"]');
-  update[data.deviceType](sensorStatus, data.message);
+  update[sensorStatus.data('type')](sensorStatus, data.message);
 }
