@@ -2,7 +2,7 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     concurrent: {
-      tasks: ['nodemon:web', 'nodemon:alert', 'nodemon:logger', 'watch'],
+      tasks: ['nodemon:web', 'nodemon:alert', 'nodemon:logger', 'shell:mosquitto', 'watch'],
       options: {
         logConcurrentOutput: true
       }
@@ -16,6 +16,11 @@ module.exports = function (grunt) {
       },
       logger: {
         script: 'logger.js'
+      }
+    },
+    shell: {
+      mosquitto: {
+        command: 'mosquitto'
       }
     },
     watch: {
@@ -52,6 +57,7 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-concurrent');
   grunt.loadNpmTasks('grunt-nodemon');
+  grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.loadNpmTasks('grunt-bower-concat');
