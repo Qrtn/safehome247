@@ -1,5 +1,6 @@
 update = {
   motion: updateMotion,
+  door: updateDoor,
   temperature_humidity: updateTemperatureHumidity
 };
 
@@ -22,6 +23,30 @@ function updateMotion(sensorStatus, message) {
 
     case 'off':
       sensorStatus.text('Idle');
+      sensorStatus.removeClass('label-danger').addClass('label-success');
+      break;
+  }
+}
+
+function updateDoor(sensorStatus, message) {
+  switch (message) {
+    case '':
+      sensorStatus.text('Unknown');
+      sensorStatus.removeClass('label-success label-danger').addClass('label-default');
+      break;
+
+    case 'exit':
+      sensorStatus.text('Offline');
+      sensorStatus.removeClass('label-success label-danger').addClass('label-default');
+      break;
+
+    case 'on':
+      sensorStatus.text('Open');
+      sensorStatus.removeClass('label-default').addClass('label-danger');
+      break;
+
+    case 'off':
+      sensorStatus.text('Closed');
       sensorStatus.removeClass('label-danger').addClass('label-success');
       break;
   }
