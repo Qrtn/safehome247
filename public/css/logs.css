@@ -7,3 +7,11 @@
 #datepicker {
   font-size: 16px;
 }
+
+#show-devices-label {
+  font-weight: bold;
+}
+
+#show-devices > .checkbox:first-child {
+  margin-top: 3px;
+}

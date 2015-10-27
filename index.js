@@ -87,8 +87,10 @@ io.on('connection', function (socket) {
   socket.on('logs', function (data) {
     db.all('\
     SELECT \
+      device.device_id, \
       log.time, \
       device.name, \
+      device.type, \
       log.message \
     FROM \
       device INNER JOIN log ON device.device_id=log.device_id \

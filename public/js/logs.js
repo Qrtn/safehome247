@@ -14,20 +14,59 @@ $(document).ready(function () {
   datepicker.setDate(new Date());
 });
 
+defaultCheckedDeviceTypes = ['motion', 'door'];
+
 function updateTable(data) {
   var logs = $('#logs');
   logs.empty();
 
+  var deviceIds = {};
   var rows = [];
   for (var i = 0; i < data.length; i++) {
-    rows.push($('<tr>').append(
-      $('<td>').text(get12HourTime(data[i].time)),
-      $('<td>').text(data[i].name),
-      $('<td>').text(data[i].message)
+    row = data[i];
+    if (!deviceIds.hasOwnProperty(row.device_id)) {
+      deviceIds[row.device_id] = {
+        name: row.name,
+        type: row.type
+      };
+    }
+
+    rows.push($("<tr data-device-id='" + row.device_id + "'>").append(
+      $('<td>').text(get12HourTime(row.time)),
+      $('<td>').text(row.name),
+      $('<td>').text(row.message)
     ));
   }
 
   logs.append(rows);
+
+  var devices = $('#show-devices');
+  devices.empty();
+
+  $.each(deviceIds, function (deviceId) {
+    var checkbox = $("<input type='checkbox'>");
+    checkbox.change(function () {
+      rows = logs.find("[data-device-id='" + deviceId + "']");
+      if (this.checked) {
+        rows.show();
+      } else {
+        rows.hide();
+      }
+    });
+
+    if ($.inArray(deviceIds[deviceId].type, defaultCheckedDeviceTypes) >= 0) {
+      checkbox.prop('checked', true);
+    } else {
+      checkbox.prop('checked', false);
+    }
+    checkbox.trigger('change');
+
+    var label = $('<label>');
+    label.append(checkbox, document.createTextNode(deviceIds[deviceId].name));
+    var div = $("<div class='checkbox'>");
+    div.append(label);
+    devices.append(div);
+  });
 }
 
 function get12HourTime(date) {
