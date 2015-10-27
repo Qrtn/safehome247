@@ -20,7 +20,7 @@ module.exports = function (grunt) {
     },
     shell: {
       mosquitto: {
-        command: 'mosquitto'
+        command: 'mosquitto -c mosquitto.conf'
       }
     },
     watch: {
