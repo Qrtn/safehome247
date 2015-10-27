@@ -52,7 +52,30 @@ function updateDoor(sensorStatus, message) {
   }
 }
 
-function updateTemperatureHumidity(sensorstatus, message) {
+function updateTemperatureHumidity(sensorStatus, message) {
+  args = message.split(' ');
+  switch (args[0]) {
+    case 'ok':
+      temperatureF = parseInt(args[1]) * 9 / 5 + 32
+      humidity = parseInt(args[2]);
+      sensorStatus.text(temperatureF.toFixed(1) + '\xB0F\t' + humidity + '%');
+      sensorStatus.removeClass('label-default label-warning label-danger').addClass('label-primary');
+      break;
+
+    case 'checksum':
+      sensorStatus.text('Checksum Error');
+      sensorStatus.removeClass('label-default label-primary label-danger').addClass('label-warning');
+      break;
+
+    case 'timeout':
+      sensorStatus.text('Timeout Error');
+      sensorStatus.removeClass('label-default label-primary label-warning').addClass('label-danger');
+      break;
+
+    case 'exit':
+      sensorStatus.text('Offline');
+      sensorStatus.removeClass('label-primary label-warning label-danger').addClass('label-default');
+  }
 }
 
 $(document).ready(function () {
