@@ -75,6 +75,7 @@ function updateTemperatureHumidity(sensorStatus, message) {
     case 'exit':
       sensorStatus.text('Offline');
       sensorStatus.removeClass('label-primary label-warning label-danger').addClass('label-default');
+      break;
   }
 }
 

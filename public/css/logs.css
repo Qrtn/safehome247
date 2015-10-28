@@ -12,6 +12,10 @@
   font-weight: bold;
 }
 
-#show-devices > .checkbox:first-child {
+#show-devices {
   margin-top: 3px;
+}
+
+#show-devices > .checkbox:first-child {
+  margin-top: 0;
 }
