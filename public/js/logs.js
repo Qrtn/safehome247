@@ -14,7 +14,7 @@ $(document).ready(function () {
   datepicker.setDate(new Date());
 });
 
-defaultCheckedDeviceTypes = ['motion', 'door'];
+var defaultCheckedDeviceTypes = ['motion', 'door'];
 
 function updateTable(data) {
   var logs = $('#logs');
@@ -43,10 +43,10 @@ function updateTable(data) {
   var devices = $('#show-devices');
   devices.empty();
 
-  $.each(deviceIds, function (deviceId) {
+  $.each(deviceIds, function (key, value) {
     var checkbox = $("<input type='checkbox'>");
     checkbox.change(function () {
-      rows = logs.find("[data-device-id='" + deviceId + "']");
+      rows = logs.find("[data-device-id='" + key + "']");
       if (this.checked) {
         rows.show();
       } else {
@@ -54,7 +54,7 @@ function updateTable(data) {
       }
     });
 
-    if ($.inArray(deviceIds[deviceId].type, defaultCheckedDeviceTypes) >= 0) {
+    if ($.inArray(value.type, defaultCheckedDeviceTypes) >= 0) {
       checkbox.prop('checked', true);
     } else {
       checkbox.prop('checked', false);
@@ -62,7 +62,7 @@ function updateTable(data) {
     checkbox.trigger('change');
 
     var label = $('<label>');
-    label.append(checkbox, document.createTextNode(deviceIds[deviceId].name));
+    label.append(checkbox, document.createTextNode(value.name));
     var div = $("<div class='checkbox'>");
     div.append(label);
     devices.append(div);
