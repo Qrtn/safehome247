@@ -26,6 +26,7 @@ function setupDeviceCache() {
   });
 }
 setupDeviceCache();
+// TODO: handle and broadcast device changes for cache update
 
 app.engine('hbs', exphbs());
 app.set('view engine', 'hbs');
@@ -75,7 +76,26 @@ app.get('/logs', function (req, res) {
   res.render('logs');
 });
 
+app.get('/graphs', function (req, res) {
+  db.all("\
+  SELECT \
+    device.device_id, \
+    device.name, \
+    device.type, \
+    (SELECT time FROM log WHERE log.device_id=device.device_id ORDER BY time ASC LIMIT 1) AS startDate \
+  FROM \
+    device \
+  WHERE \
+    device.account_id=? AND \
+    device.type IN ('temperature_humidity') \
+  ", 1, function (err, rows) {
+    res.render('graphs', {devices: rows});
+  });
+});
+
 io.on('connection', function (socket) {
+  // TODO: authenticate socket.io communication when accounts are established!
+
   socket.on('login', function (data) {
     // data.sessionId;
     socket.join(1);
@@ -104,6 +124,22 @@ io.on('connection', function (socket) {
       socket.emit('logs', rows);
     });
   });
+  socket.on('graphs', function (data) {
+    db.all('\
+    SELECT \
+      log.time, \
+      log.message \
+    FROM \
+      device INNER JOIN log ON device.device_id=log.device_id \
+    WHERE \
+      device.device_id=? AND \
+      log.time BETWEEN ? AND ? \
+    ',
+    data.deviceId, data.startTime, data.endTime, function (err, rows) {
+      console.log(err);
+      socket.emit('graphs', [data.deviceId, rows]);
+    });
+  });
 });
 
 mqttclient.on('message', function (topic, payload) {
@@ -113,7 +149,7 @@ mqttclient.on('message', function (topic, payload) {
                         payload.toString()});
 });
 
-mqttclient.subscribe('device/+')
+mqttclient.subscribe('device/+');
 
 if (process.env.NODE_ENV == 'production') {
   server.listen(3000);

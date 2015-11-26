@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <title>Graphs - SafeHome247</title>
+  <link rel='stylesheet' href='/css/bower.min.css'>
+  <link rel='stylesheet' href='/css/graphs.css'>
+</head>
+<body>
+  <div class='container'>
+    <div class='navbar navbar-inverse'>
+      <div class='container-fluid'>
+        <div class='navbar-header'>
+          <a class='navbar-brand' href='/'>SafeHome247</a>
+        </div>
+        <ul class='nav navbar-nav'>
+          <li><a href='/devices'>Devices</a></li>
+          <li><a href='/rules'>Rules</a></li>
+          <li><a href='/logs'>Logs</a></li>
+          <li class='active'><a href='/graphs'>Graphs</a></li>
+        </ul>
+      </div>
+    </div>
+
+    {{#devices}}
+    <div data-device-id='{{device_id}}' data-type='{{type}}'>
+      <h2>{{name}} <small>{{type}}</small></h2>
+
+      <div class='row'>
+        <div class='col-sm-6 form-group'>
+          <label for='dps-{{device_id}}'>Start:</label>
+          <input type='text' id='dps-{{device_id}}' class='form-control datepicker-start'
+            data-date='{{startDate}}'>
+        </div>
+        
+        <div class='col-sm-6 form-group'>
+          <label for='dpe-{{device_id}}'>End:</label>
+          <input type='text' id='dpe-{{device_id}}' class='form-control datepicker-end'>
+        </div>
+      </div>
+
+      <hr>
+    </div>
+    {{/devices}}
+
+  </div>
+
+  <script src='/js/bower.min.js'></script>
+  <script src='/js/graphs.js'></script>
+</body>
+</html>

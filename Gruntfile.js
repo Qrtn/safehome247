@@ -35,7 +35,9 @@ module.exports = function (grunt) {
         dest: 'public/js/bower.js',
         cssDest: 'public/css/bower.css',
         mainFiles: {
-          'bootstrap': ['dist/css/bootstrap.css', 'dist/js/bootstrap.js']
+          'bootstrap': ['dist/css/bootstrap.css', 'dist/js/bootstrap.js'],
+          'Flot': ['jquery.flot.js', 'jquery.flot.time.js'],
+          'flot-axislabels': ['jquery.flot.axislabels.js']
         }
       }
     },
