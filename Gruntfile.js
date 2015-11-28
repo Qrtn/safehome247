@@ -32,8 +32,8 @@ module.exports = function (grunt) {
 
     bower_concat: {
       all: {
-        dest: 'public/js/bower.js',
-        cssDest: 'public/css/bower.css',
+        dest: 'public/js/bundle.js',
+        cssDest: 'public/css/bundle.css',
         mainFiles: {
           'bootstrap': ['dist/css/bootstrap.css', 'dist/js/bootstrap.js'],
           'Flot': ['jquery.flot.js', 'jquery.flot.time.js'],
@@ -44,14 +44,14 @@ module.exports = function (grunt) {
     uglify: {
       bower: {
         files: {
-          'public/js/bower.min.js': 'public/js/bower.js'
+          'public/js/bundle.min.js': 'public/js/bundle.js'
         }
       }
     },
     cssmin: {
       bower: {
         files: {
-          'public/css/bower.min.css': 'public/css/bower.css'
+          'public/css/bundle.min.css': 'public/css/bundle.css'
         }
       }
     }
