@@ -9,13 +9,22 @@ module.exports = function (grunt) {
     },
     nodemon: {
       web: {
-        script: 'index.js'
+        script: 'index.js',
+        options: {
+          ignore: ['node_modules/', 'bower_components/', 'Gruntfile.js', 'views/', 'public/']
+        }
       },
       alert: {
-        script: 'alert.js'
+        script: 'alert.js',
+        options: {
+          ignore: ['node_modules/', 'bower_components/', 'Gruntfile.js', 'views/', 'public/']
+        }
       },
       logger: {
-        script: 'logger.js'
+        script: 'logger.js',
+        options: {
+          ignore: ['node_modules/', 'bower_components/', 'Gruntfile.js', 'views/', 'public/']
+        }
       }
     },
     shell: {
