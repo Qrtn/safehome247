@@ -2,7 +2,8 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     concurrent: {
-      tasks: ['nodemon:web', 'nodemon:alert', 'nodemon:logger', 'shell:mosquitto', 'watch'],
+      tasks: ['nodemon:web', 'nodemon:alert', 'nodemon:logger',
+        'shell:mosquitto', 'watch'],
       options: {
         logConcurrentOutput: true
       }
@@ -11,19 +12,22 @@ module.exports = function (grunt) {
       web: {
         script: 'index.js',
         options: {
-          ignore: ['node_modules/', 'bower_components/', 'Gruntfile.js', 'views/', 'public/']
+          ignore: ['node_modules/', 'bower_components/', 'Gruntfile.js',
+            'views/', 'public/']
         }
       },
       alert: {
         script: 'alert.js',
         options: {
-          ignore: ['node_modules/', 'bower_components/', 'Gruntfile.js', 'views/', 'public/']
+          ignore: ['node_modules/', 'bower_components/', 'Gruntfile.js',
+            'views/', 'public/']
         }
       },
       logger: {
         script: 'logger.js',
         options: {
-          ignore: ['node_modules/', 'bower_components/', 'Gruntfile.js', 'views/', 'public/']
+          ignore: ['node_modules/', 'bower_components/', 'Gruntfile.js',
+            'views/', 'public/']
         }
       }
     },
@@ -76,6 +80,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
 
   grunt.registerTask('start', ['concurrent']);
-  grunt.registerTask('buildbower', ['bower_concat', 'uglify:bower', 'cssmin:bower']);
+  grunt.registerTask('buildbower', ['bower_concat', 'uglify:bower',
+                     'cssmin:bower']);
 
 };
