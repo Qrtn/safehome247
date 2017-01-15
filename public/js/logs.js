@@ -14,7 +14,8 @@ $(document).ready(function () {
   datepicker.setDate(new Date());
 });
 
-var defaultCheckedDeviceTypes = ['motion', 'door'];
+// var defaultCheckedDeviceTypes = ['motion', 'door'];
+var defaultCheckedDeviceTypes = [];
 
 function updateTable(data) {
   var logs = $('#logs');
