@@ -4,7 +4,6 @@ dotenv.load();
 var mqtt = require('mqtt');
 var sqlite3 = require('sqlite3');
 var sendgrid = require('sendgrid')(process.env.SENDGRID_API_KEY);
-var helper = require('sendgrid').mail;
 
 var db = new sqlite3.Database('safehome247.sqlite')
 
