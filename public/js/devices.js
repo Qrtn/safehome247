@@ -53,13 +53,20 @@ function updateDoor(sensorStatus, message) {
 }
 
 function updateTemperatureHumidity(sensorStatus, message) {
-  args = message.split(' ');
+  args = message.split(/\s+/);
   switch (args[0]) {
     case 'ok':
-      temperatureF = parseInt(args[1]) * 9 / 5 + 32
-      humidity = parseInt(args[2]);
+      temperatureF = parseFloat(args[1]) * 9 / 5 + 32;
+      humidity = parseFloat(args[2]);
       sensorStatus.text(temperatureF.toFixed(1) + '\xB0F\t' + humidity + '%');
       sensorStatus.removeClass('label-default label-warning label-danger').addClass('label-primary');
+      break;
+
+    case 'fault':
+      temperatureF = parseFloat(args[1]) * 9 / 5 + 32;
+      humidity = parseFloat(args[2]);
+      sensorStatus.text('Fault ' + temperatureF.toFixed(1) + '\xB0F\t' + humidity + '%');
+      sensorStatus.removeClass('label-primary label-default label-warning').addClass('label-danger');
       break;
 
     case 'checksum':
