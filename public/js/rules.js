@@ -7,5 +7,5 @@ $(document).ready(function () {
   });
 
   $('#all-alerts-on').click(function () { $('.alert-toggle').bootstrapSwitch('state', true); });
-  $('#all-alerts-off').click(function () { $('.alert-toggle').bootstrapSwitch('state', false); });
+  $('#all-alerts-off').click(function () { $('.alert-toggle[data-critical=0]').bootstrapSwitch('state', false); });
 });

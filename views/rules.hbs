@@ -24,8 +24,10 @@
     </div>
 
     <div class='all-alerts'>
-      <button class='btn btn-primary' type='button' id='all-alerts-on'>All alerts on</button>
-      <button class='btn btn-default' type='button' id='all-alerts-off'>All alerts off</button>
+      <button class='btn btn-primary' type='button'
+        id='all-alerts-on'>All alerts on</button>
+      <button class='btn btn-default' type='button'
+        id='all-alerts-off'>Non-critical alerts off</button>
     </div>
 
     <table class='table table-striped'>
@@ -35,7 +37,8 @@
           <h3 class='sensor-name'>{{name}}</h3>
         </td>
         <td class='cell-alert'>
-          <input type='checkbox' class='alert-toggle' data-label-text='Alert' data-device-id='{{device_id}}'{{#if alert}} checked{{/if}}>
+          <input type='checkbox' class='alert-toggle' data-label-text='Alert'
+          data-critical='{{critical}}' data-device-id='{{device_id}}'{{#if alert}} checked{{/if}}>
         </td>
       </tr>
     {{/devices}}

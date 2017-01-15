@@ -62,7 +62,8 @@ app.get('/rules', function (req, res) {
   SELECT \
     device.device_id, \
     device.name, \
-    device.alert \
+    device.alert, \
+    device.critical \
   FROM \
     device \
   WHERE \
