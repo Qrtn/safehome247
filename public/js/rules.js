@@ -6,6 +6,6 @@ $(document).ready(function () {
     socket.emit('alert', {value: state, device_id: $(this).data('device-id')});
   });
 
-  $('#all-alerts-on').click(function () { $('.alert-toggle').bootstrapSwitch('state', true); });
+  $('#all-alerts-on').click(function () { $('.alert-toggle[data-critical=0]').bootstrapSwitch('state', true); });
   $('#all-alerts-off').click(function () { $('.alert-toggle[data-critical=0]').bootstrapSwitch('state', false); });
 });
